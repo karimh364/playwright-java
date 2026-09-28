@@ -30,6 +30,32 @@ public class Ejercicio05Test extends BaseTest {
                 .hasURL("https://the-internet.herokuapp.com/secure");
 
         // Espera utilizada solamente para la grabación del video
-        page.waitForTimeout(3000);
+        page.waitForTimeout(2000);
+    }
+
+    @Test
+    void loginFallido() {
+
+        page.navigate("https://the-internet.herokuapp.com/login");
+
+        page.getByLabel("Username").fill("usuarioIncorrecto");
+        page.getByLabel("Password").fill("claveIncorrecta");
+
+        page.getByRole(
+                AriaRole.BUTTON,
+                new Page.GetByRoleOptions().setName("Login")
+        ).click();
+
+        Locator mensajeError =
+                page.getByText("Your username is invalid!");
+
+        assertThat(page)
+                .hasURL("https://the-internet.herokuapp.com/login");
+
+        assertThat(mensajeError)
+                .isVisible();
+
+        // Espera utilizada solamente para la grabación del video
+        page.waitForTimeout(2000);
     }
 }
